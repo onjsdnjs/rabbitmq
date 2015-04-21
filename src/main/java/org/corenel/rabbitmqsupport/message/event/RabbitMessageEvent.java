@@ -11,11 +11,10 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
 
 @RabbitMQConfig
-public class RabbitMessageEvent<T>{
+public class RabbitMessageEvent<T> implements MessageEvent<T>{
 
-//    @RabbitMQConfig
     public void config(){}
-    /*
+    
     @OnMessage
     public void onMessage(T t) {
     	System.out.println(t);
@@ -49,5 +48,5 @@ public class RabbitMessageEvent<T>{
 	@Override
 	public Map<String, Object> arguments() {
 		return null;
-	}*/
+	}
 }

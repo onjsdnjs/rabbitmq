@@ -28,16 +28,10 @@ public class RabbitMQConsumerExecutor implements RabbitMQExecutor, InitializingB
 		
 		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey","autoAck","durable","exclusive","autoDelete","converterClass"};
 		Object[] annoValues1 = new Object[]{"exchange01","direct","queue01","routingKey01",false,true,false,false,ConsumerConverter.class};
-		AddRuntimeAnnotation.addAnnotationDynamic(RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), "config", annoFiled1, annoValues1);
+		RabbitMessageEvent<Message> messageEvent = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic(RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), "config", annoFiled1, annoValues1);
 
-		/*String[] annoField2 = new String[]{"exchange","type","queue","routingKey","autoAck","durable","exclusive","autoDelete","converterClass","retryInterval","basicQos"};
-		Object[] annoValues2 = new Object[]{"exchange01","direct","queue01","routingKey01",false,true,false,false,ConsumerConverter.class,	2000,1};
-		RabbitMessageEvent<Message> messageEvent2 = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic
-													(RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), "config", annoField2, annoValues2);*/
-		
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
-//		messageEvents.add(messageEvent1);
-//		messageEvents.add(messageEvent2);
+		messageEvents.add(messageEvent);
 		
 		RabbitMQConsumerHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);
 		rabbitMQConsumerHandler.register(messageEvents);
@@ -46,7 +40,7 @@ public class RabbitMQConsumerExecutor implements RabbitMQExecutor, InitializingB
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-//		connectionPool.initialize(RabbitMQConfiguration.class);
+		connectionPool.initialize(RabbitMQConfiguration.class);
 		
 	}
 }

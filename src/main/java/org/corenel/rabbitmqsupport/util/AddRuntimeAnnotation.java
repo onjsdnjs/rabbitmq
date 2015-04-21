@@ -1,8 +1,9 @@
 package org.corenel.rabbitmqsupport.util;
 
+
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtMethod;
+//import javassist.CtMethod;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
@@ -25,7 +26,7 @@ public class AddRuntimeAnnotation {
 
 		ClassPool pool = ClassPool.getDefault();
 		CtClass cc = pool.getCtClass(className);
-		/*CtMethod methodDescriptor = cc.getDeclaredMethod(methodName);
+//		CtMethod methodDescriptor = cc.getDeclaredMethod(methodName);
 		ClassFile ccFile = cc.getClassFile();
 		ConstPool constpool = ccFile.getConstPool();
 
@@ -70,7 +71,8 @@ public class AddRuntimeAnnotation {
 		}
 		
 		attr.addAnnotation(annotation);
-		methodDescriptor.getMethodInfo().addAttribute(attr);*/
+//		methodDescriptor.getMethodInfo().addAttribute(attr);
+		ccFile.addAttribute(attr);
 		Class<?> dynamiqueBeanClass = cc.toClass();
 
 		return dynamiqueBeanClass.newInstance();

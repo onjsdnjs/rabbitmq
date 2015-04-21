@@ -22,17 +22,17 @@ public class RabbitMQProducerExecutor implements RabbitMQExecutor, InitializingB
 	
 	public void execute() throws Exception {
 		
-//		List<MessageEvent<Message>> listeners = new ArrayList<MessageEvent<Message>>();
-//		listeners.add(new RabbitMessageEvent<Message>());
+		List<MessageEvent<Message>> listeners = new ArrayList<MessageEvent<Message>>();
+		listeners.add(new RabbitMessageEvent<Message>());
 		
-//		RabbitMQProducerHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
-//		rabbitMQProducerHandler.publish(listeners, null, "test message".getBytes());
+		RabbitMQProducerHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
+		rabbitMQProducerHandler.publish(listeners, null, "test message".getBytes());
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-//		connectionPool.initialize(RabbitMQConfiguration.class);
+		connectionPool.initialize(RabbitMQConfiguration.class);
 		
 	}
 }
