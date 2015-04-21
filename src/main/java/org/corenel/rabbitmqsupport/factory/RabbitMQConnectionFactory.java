@@ -18,7 +18,7 @@ import com.rabbitmq.client.ConnectionFactory;
 @Component("rabbitMQClientFactory")
 public class RabbitMQConnectionFactory {
 	
-	private ExecutorService executorService = Executors.newFixedThreadPool(50);
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 	
     public Connection connection(Class<?> clazz) throws IOException {
     	

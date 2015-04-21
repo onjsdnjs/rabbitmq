@@ -13,8 +13,6 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
 @RabbitMQConfig
 public class RabbitMessageEvent<T> implements MessageEvent<T>{
 
-    public void config(){}
-    
     @OnMessage
     public void onMessage(T t) {
     	System.out.println(t);
