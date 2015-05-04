@@ -9,13 +9,16 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnCancel;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnCancelBySender;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
+import org.corenel.rabbitmqsupport.message.CommandMessage;
+import org.corenel.rabbitmqsupport.message.Message;
 
 @RabbitMQConfig
 public class RabbitMessageEvent<T> implements MessageEvent<T>{
 
     @OnMessage
     public void onMessage(T t) {
-    	System.out.println(t);
+    	Message message = (CommandMessage)t;
+    	System.out.println(message.getMessage());
     }
 
 	@AfterRegistered

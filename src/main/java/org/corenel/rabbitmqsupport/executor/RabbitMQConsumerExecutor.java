@@ -1,5 +1,6 @@
 package org.corenel.rabbitmqsupport.executor;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
-import org.corenel.rabbitmqsupport.converters.ConsumerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
 import org.corenel.rabbitmqsupport.handler.RabbitMQConsumerHandler;
 import org.corenel.rabbitmqsupport.message.Message;
@@ -19,16 +19,16 @@ import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unchecked")
 @Component("rabbitMQConsumer")
-public class RabbitMQConsumerExecutor implements RabbitMQExecutor, InitializingBean {
+public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements InitializingBean {
 	
 	@Resource(name="rabbitMQConnectionPool")
     private RabbitMQConnectionPool connectionPool;
 
 	public void execute() throws Exception {
 		
-		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey","autoAck","durable","exclusive","autoDelete","converterClass"};
-		Object[] annoValues1 = new Object[]{"exchange01","direct","queue01","routingKey01",false,true,false,false,ConsumerConverter.class};
-		RabbitMessageEvent<Message> messageEvent = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic(RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), "config", annoFiled1, annoValues1);
+		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey"};
+		Object[] annoValues1 = new Object[]{"exchange01","direct","queue01","routingKey01"};
+		RabbitMessageEvent<Message> messageEvent = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic(getAnnoMap(), RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
 		messageEvents.add(messageEvent);

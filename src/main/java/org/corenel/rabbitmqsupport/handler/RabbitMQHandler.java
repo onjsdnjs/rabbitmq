@@ -15,6 +15,7 @@ import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 
+@SuppressWarnings("unchecked")
 public class RabbitMQHandler extends AbstractRabbitMQHandler {
 	
 	public RabbitMQHandler(RabbitMQConnectionPool pool) {

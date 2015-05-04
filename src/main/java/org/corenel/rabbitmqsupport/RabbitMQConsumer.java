@@ -5,6 +5,7 @@ import org.corenel.rabbitmqsupport.executor.RabbitMQExecutor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@SuppressWarnings("resource")
 public class RabbitMQConsumer {
 	
 	public static void main(String[] args) throws Exception{

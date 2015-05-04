@@ -1,6 +1,8 @@
 package org.corenel.rabbitmqsupport.util;
 
 
+import java.util.Map;
+
 import javassist.ClassPool;
 import javassist.CtClass;
 //import javassist.CtMethod;
@@ -20,16 +22,21 @@ import javassist.bytecode.annotation.IntegerMemberValue;
 import javassist.bytecode.annotation.ShortMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
 
-public class AddRuntimeAnnotation {
 
-	public static Object addAnnotationDynamic(String className, String annoName, String methodName, String[] annoFields, Object[] annoValues) throws Exception {
+public class AddRuntimeAnnotation {
+	
+	public static Object addAnnotationDynamic(Map<String, Object> annoMap, String className, String annoName, String[] annoFields, Object[] annoValues) throws Exception {
 
 		ClassPool pool = ClassPool.getDefault();
-		CtClass cc = pool.getCtClass(className);
+		CtClass cc = pool.get(className);
 //		CtMethod methodDescriptor = cc.getDeclaredMethod(methodName);
-		ClassFile ccFile = cc.getClassFile();
+		ClassFile ccFile = null;
+		if(!annoMap.containsKey(annoName)){
+			ccFile = cc.getClassFile();
+		}else{
+			ccFile = (ClassFile) annoMap.get(annoName);
+		}
 		ConstPool constpool = ccFile.getConstPool();
-
 		AnnotationsAttribute attr = new AnnotationsAttribute(constpool, AnnotationsAttribute.visibleTag);
 		Annotation annotation = new Annotation(annoName, constpool);
 		
@@ -73,9 +80,15 @@ public class AddRuntimeAnnotation {
 		attr.addAnnotation(annotation);
 //		methodDescriptor.getMethodInfo().addAttribute(attr);
 		ccFile.addAttribute(attr);
-		Class<?> dynamiqueBeanClass = cc.toClass();
-
-		return dynamiqueBeanClass.newInstance();
-
+		annoMap.put(annoName, ccFile);
+		
+		if(!annoMap.containsKey(className)){
+			Class<?> dynamiqueBeanClass = cc.toClass();
+			annoMap.put(className, dynamiqueBeanClass);
+			return dynamiqueBeanClass.newInstance();
+		}else{
+			Class<?> dynamiqueBeanClass = ((Class<?>)annoMap.get(className));
+			return dynamiqueBeanClass.newInstance();
+		}
 	}
 }

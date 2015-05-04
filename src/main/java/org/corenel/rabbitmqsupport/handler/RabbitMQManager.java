@@ -4,13 +4,19 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ShutdownListener;
 import com.rabbitmq.client.ShutdownSignalException;
 
 public abstract class RabbitMQManager implements ShutdownListener {
+	
+	Logger LOGGER = LoggerFactory.getLogger(RabbitMQManager.class);
 	
 	private volatile Connection connection;
 	private ScheduledExecutorService executor;
@@ -23,14 +29,14 @@ public abstract class RabbitMQManager implements ShutdownListener {
 	protected void establish() {
 		try
         {
-            connection = connectionPool.connection();
+			connection = connectionPool.connection();
             connection.addShutdownListener(this);
             executor = Executors.newSingleThreadScheduledExecutor();
-//            LOGGER.info("Connected to " + connection.getAddress() + ":" + connection.getPort());
+            LOGGER.info("Connected to " + connection.getAddress() + ":" + connection.getPort());
         }
         catch (final Exception e)
         {
-//            LOGGER.log(Level.SEVERE, "Failed to connect to " + connection.connection.getAddress() + ":" + connection.getPort(), e);
+            LOGGER.debug("Failed to connect to " + connection.getAddress() + ":" + connection.getPort(), e);
             asyncWaitAndReconnect();
         }
 		
@@ -49,7 +55,7 @@ public abstract class RabbitMQManager implements ShutdownListener {
     {
         if (!cause.isInitiatedByApplication())
         {
-//            LOGGER.log(Level.SEVERE, "Lost connection to " + factory.getHost() + ":" + factory.getPort(), cause);
+            LOGGER.debug("Lost connection to " + connection.getAddress() + ":" + connection.getPort(), cause);
 
             connection = null;
             asyncWaitAndReconnect();
@@ -93,7 +99,7 @@ public abstract class RabbitMQManager implements ShutdownListener {
         }
         catch (final Exception e)
         {
-//            LOGGER.log(Level.SEVERE, "Failed to create channel", e);
+            LOGGER.debug("Failed to create channel", e);
             return null;
         }
     }
@@ -111,7 +117,7 @@ public abstract class RabbitMQManager implements ShutdownListener {
         }
         catch (final Exception e)
         {
-//            LOGGER.log(Level.SEVERE, "Failed to close channel: " + channel, e);
+            LOGGER.debug("Failed to close channel: " + channel, e);
         }
     }
 	

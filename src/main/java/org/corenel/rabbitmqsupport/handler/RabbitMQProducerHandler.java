@@ -2,11 +2,14 @@ package org.corenel.rabbitmqsupport.handler;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.corenel.rabbitmqsupport.converters.ProducerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
+@SuppressWarnings("unchecked")
 public class RabbitMQProducerHandler extends RabbitMQHandler{
 	
 	public RabbitMQProducerHandler(RabbitMQConnectionPool pool) {

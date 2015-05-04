@@ -25,7 +25,7 @@ public @interface RabbitMQConfig {
 
     String routingKey() default "";
 
-    boolean autoAck() default true;
+    boolean autoAck() default false;
 
     boolean durable() default true;
     

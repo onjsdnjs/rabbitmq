@@ -10,9 +10,9 @@ import static java.lang.annotation.ElementType.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RabbitMQContext {
     
-	String username() default "guest";
+	String username() default "onjsdnjs";
 
-	String password() default "guest";
+	String password() default "sust1616";
     
 	String virtualhost() default "/";
     
