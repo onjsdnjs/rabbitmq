@@ -1,6 +1,9 @@
 package org.corenel.rabbitmqsupport.message;
 
-public class CommandMessage extends Message{
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class CommandMessage extends Message implements Serializable{
 	
 	private String message;
 

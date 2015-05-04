@@ -5,11 +5,13 @@ import org.springframework.util.SerializationUtils;
 public class RabbitMQMessageConvert {
 	
     public static byte[] serialize(Object obj) {
-    	return SerializationUtils.serialize(obj);
+    	byte[] bytes = SerializationUtils.serialize(obj);
+    	return bytes;
     }
 
     public static Object deserialize(byte[] data) {
-    	return SerializationUtils.deserialize(data);
+    	Object obj = SerializationUtils.deserialize(data);
+    	return obj;
     }
     
 }

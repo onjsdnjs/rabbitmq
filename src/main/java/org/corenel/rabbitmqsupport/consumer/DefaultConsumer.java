@@ -17,6 +17,8 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnCancel;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnCancelBySender;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
+import org.corenel.rabbitmqsupport.converters.ConsumerConverter;
+import org.corenel.rabbitmqsupport.message.CommandMessage;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -41,19 +43,19 @@ public class DefaultConsumer<T> implements Consumer {
 		messageEvent = event;
 		consumerRegister = register;
     	consumerRegister.register(this, channel, messageEvent);
-        annotations = loadMethods(messageEvent);
-        
     }
 
-    @Override
+	@Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
     	
         Method method = annotations.get(OnMessage.class);
-
+        
         if (method != null) {
             try
             {
-                method.invoke(messageEvent, converterInstance(messageEvent).convert(body));
+            	ConsumerConverter<Object> convert = converterInstance(messageEvent);
+            	CommandMessage message = (CommandMessage)convert.convert(body);
+                method.invoke(messageEvent, message);
                 replyTo(envelope, properties);
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
@@ -86,23 +88,25 @@ public class DefaultConsumer<T> implements Consumer {
 
     @Override
     public void handleConsumeOk(String consumerTag) {
+    	annotations = loadMethods(messageEvent);
         StringBuilder builder = new StringBuilder();
 
-        builder
-                .append("Class ")
-                .append(messageEvent.getClass().getSimpleName())
-                .append(" listening to ")
-                .append(fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue())
-                .append(" queue");
+        builder.append("Class ")
+               .append(messageEvent.getClass().getSimpleName())
+               .append(" listening to ")
+               .append(fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue())
+               .append(" queue");
 
-        Method method = annotations.get(AfterRegistered.class);
-
-        if (method != null) {
-            try {
-                method.invoke(messageEvent, consumerTag);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        if(annotations != null){
+	        Method method = annotations.get(AfterRegistered.class);
+	
+	        if (method != null) {
+	            try {
+	                method.invoke(messageEvent, consumerTag);
+	            } catch (Exception e) {
+	                throw new RuntimeException(e);
+	            }
+	        }
         }
 
         System.out.println(builder.toString());

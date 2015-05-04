@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 import org.corenel.rabbitmqsupport.converters.ConsumerConverter;
 import org.corenel.rabbitmqsupport.converters.DefaultConverter;
+import org.corenel.rabbitmqsupport.message.Message;
 
 @SuppressWarnings("rawtypes")
 @Target({TYPE, METHOD, FIELD, PARAMETER})

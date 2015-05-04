@@ -16,6 +16,7 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnCancelBySender;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
 import org.corenel.rabbitmqsupport.converters.ConsumerConverter;
+import org.corenel.rabbitmqsupport.message.Message;
 
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AnnotationIntrospector {
@@ -30,13 +31,13 @@ public class AnnotationIntrospector {
         return clazz.getAnnotation(anno);
     }
 
-	public static <T> ConsumerConverter<T> converterInstance(Object o) {
+	public static <T> ConsumerConverter<T> converterInstance(Object obj) {
         if (classConverterMap == null) {
             classConverterMap = new HashMap<Class, ConsumerConverter>();
         }
 
-        RabbitMQConfig annotation = o.getClass().getAnnotation(RabbitMQConfig.class);
-        Class<? extends ConsumerConverter> converterClass = annotation.converterClass();
+        RabbitMQConfig annotation = obj.getClass().getAnnotation(RabbitMQConfig.class);
+        Class<? extends ConsumerConverter<Message>> converterClass = (Class<? extends ConsumerConverter<Message>>) annotation.converterClass();
 
         if (classConverterMap.containsKey(converterClass)) {
             return classConverterMap.get(converterClass);

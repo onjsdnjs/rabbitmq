@@ -13,21 +13,21 @@ public class RabbitMQConsumerHandler extends RabbitMQHandler {
 		super(pool);
 	}
 
-    public <T> void register(List<T> listeners) throws IOException {
+    public <T> void register(List<T> messageEvents) throws IOException {
         
-    	if (listeners == null) {
-            throw new NotSupportedException("The listeners are null. Maybe you didn't create your class injecting it");
+    	if (messageEvents == null) {
+            throw new NotSupportedException("The messageEvents are null. Maybe you didn't create your class injecting it");
         }
-        super.register(listeners);
+        super.register(messageEvents);
     }
 
     
-	public <T> void register(T... listeners) throws IOException {
+	public <T> void register(T... messageEvents) throws IOException {
     	
-    	if (listeners == null) {
-    		throw new NotSupportedException("The listeners are null. Maybe you didn't create your class injecting it");
+    	if (messageEvents == null) {
+    		throw new NotSupportedException("The messageEvents are null. Maybe you didn't create your class injecting it");
     	}
-    	super.register(listeners);
+    	super.register(messageEvents);
     }
 
 }

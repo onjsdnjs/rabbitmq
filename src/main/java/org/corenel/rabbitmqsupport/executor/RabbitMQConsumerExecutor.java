@@ -28,10 +28,11 @@ public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements Initia
 		
 		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey"};
 		Object[] annoValues1 = new Object[]{"exchange01","direct","queue01","routingKey01"};
-		RabbitMessageEvent<Message> messageEvent = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic(getAnnoMap(), RabbitMessageEvent.class.getName(), RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
+		RabbitMessageEvent<Message> messageEvent1 = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic
+													(getAnnoMap(),"org.corenel.rabbitmqsupport.message.event.RabbitMessageEvent", RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
-		messageEvents.add(messageEvent);
+		messageEvents.add(messageEvent1);
 		
 		RabbitMQConsumerHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);
 		rabbitMQConsumerHandler.register(messageEvents);

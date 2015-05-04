@@ -38,16 +38,16 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 		
 		RabbitMQConfig anno1 = fetchConfigurationInfo(RabbitMessageEvent.class, RabbitMQConfig.class);
 		
-		String[] annoFiled2 = new String[]{"exchange","type","queue","routingKey"};
+		/*String[] annoFiled2 = new String[]{"exchange","type","queue","routingKey"};
 		Object[] annoValues2 = new Object[]{"exchange02","topic","queue02","routingKey02"};
 		RabbitMessageEvent<Message> messageEvent2 = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic
 													(getAnnoMap(), "org.corenel.rabbitmqsupport.message.event.RabbitMessageEvent", RabbitMQConfig.class.getName(), annoFiled2, annoValues2);
 		
-		RabbitMQConfig anno2 = fetchConfigurationInfo(RabbitMessageEvent.class, RabbitMQConfig.class);
+		RabbitMQConfig anno2 = fetchConfigurationInfo(RabbitMessageEvent.class, RabbitMQConfig.class);*/
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
 		messageEvents.add(messageEvent1);
-		messageEvents.add(messageEvent2);
+//		messageEvents.add(messageEvent2);
 		
 		Message message = new CommandMessage();
 		message.setMessage("test message");
