@@ -4,7 +4,9 @@ import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.converterI
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.fetchConfigurationInfo;
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.loadMethods;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
