@@ -55,7 +55,7 @@ public class DefaultConsumer<T> implements Consumer {
         if (method != null) {
             try
             {
-            	ConsumerConverter<Object> convert = converterInstance(messageEvent);
+            	ConsumerConverter<Object> convert = (ConsumerConverter<Object>) converterInstance(messageEvent.getClass());
             	CommandMessage message = (CommandMessage)convert.convert(body);
                 method.invoke(messageEvent, message);
                 replyTo(envelope, properties);
@@ -81,11 +81,12 @@ public class DefaultConsumer<T> implements Consumer {
 
 	private void replyTo(Envelope envelope, AMQP.BasicProperties properties) throws IOException, UnsupportedEncodingException {
 
-		/*String routingKey = envelope.getRoutingKey();
+		String routingKey = envelope.getRoutingKey();
+		/*properties.getReplyTo();
 		String contentType = properties.getContentType();
 		long deliveryTag = envelope.getDeliveryTag();*/
-		channel.basicPublish("", properties.getReplyTo(), new BasicProperties.Builder().correlationId(properties.getCorrelationId()).build(), 
-				"응답합니다.".getBytes("UTF-8"));
+		channel.basicPublish("", routingKey, new BasicProperties.Builder().correlationId(properties.getCorrelationId()).build(), 
+				"send response from Consumer".getBytes("UTF-8"));
 	}
 
     @Override

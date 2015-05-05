@@ -1,17 +1,18 @@
 package org.corenel.rabbitmqsupport.executor;
 
+
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.fetchConfigurationInfo;
+import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.converterInstance;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
-import org.corenel.rabbitmqsupport.annotation.RabbitMQContext;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
+import org.corenel.rabbitmqsupport.converters.DefaultConverter;
+import org.corenel.rabbitmqsupport.converters.ProducerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
 import org.corenel.rabbitmqsupport.handler.RabbitMQProducerHandler;
 import org.corenel.rabbitmqsupport.message.CommandMessage;
@@ -51,9 +52,11 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 		
 		Message message = new CommandMessage();
 		message.setMessage("test message");
+		ProducerConverter<Object> convert = (ProducerConverter<Object>) converterInstance(RabbitMQConfiguration.class);
+		byte[] byteMessage = convert.convert(message);
 		
 		RabbitMQProducerHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
-		rabbitMQProducerHandler.publish(messageEvents, null, message);
+		rabbitMQProducerHandler.publish(messageEvents, null, byteMessage);
 	}
 
 	@Override
