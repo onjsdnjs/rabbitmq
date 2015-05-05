@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
-import org.corenel.rabbitmqsupport.converters.DefaultConverter;
+import org.corenel.rabbitmqsupport.constants.ApplicationConstants;
 import org.corenel.rabbitmqsupport.converters.ProducerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
 import org.corenel.rabbitmqsupport.handler.RabbitMQProducerHandler;
@@ -35,7 +35,7 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey"};
 		Object[] annoValues1 = new Object[]{"exchange01","direct","queue01","routingKey01"};
 		RabbitMessageEvent<Message> messageEvent1 = (RabbitMessageEvent<Message>)AddRuntimeAnnotation.addAnnotationDynamic
-													(getAnnoMap(),"org.corenel.rabbitmqsupport.message.event.RabbitMessageEvent", RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
+													(getAnnoMap(),ApplicationConstants.MESSAGE_EVENT, RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
 		
 		RabbitMQConfig anno1 = fetchConfigurationInfo(RabbitMessageEvent.class, RabbitMQConfig.class);
 		
