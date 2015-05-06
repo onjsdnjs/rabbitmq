@@ -1,11 +1,8 @@
 package org.corenel.rabbitmqsupport.executor;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
@@ -23,7 +20,7 @@ public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements Initia
 	
 	@Resource(name="rabbitMQConnectionPool")
     private RabbitMQConnectionPool connectionPool;
-
+	
 	public void execute() throws Exception {
 		
 		String[] annoFiled1 = new String[]{"exchange","type","queue","routingKey"};
@@ -32,6 +29,15 @@ public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements Initia
 													(getAnnoMap(),"org.corenel.rabbitmqsupport.message.event.RabbitMessageEvent", RabbitMQConfig.class.getName(), annoFiled1, annoValues1);
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
 		messageEvents.add(messageEvent1);
 		
 		RabbitMQConsumerHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);

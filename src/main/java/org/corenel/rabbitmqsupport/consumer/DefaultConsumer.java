@@ -5,9 +5,7 @@ import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.converterI
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.fetchConfigurationInfo;
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.loadMethods;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -65,7 +63,7 @@ public class DefaultConsumer<T> implements Consumer {
             }
             catch (final Exception e)
             {
-                LOGGER.info("Failed to push over websocket message ID: " + properties.getMessageId(), e);
+                LOGGER.info("Failed to push over websocket messag e ID: " + properties.getMessageId(), e);
                 try
                 {
                     final boolean requeue = true;

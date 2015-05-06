@@ -48,6 +48,15 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
 		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
+		messageEvents.add(messageEvent1);
 //		messageEvents.add(messageEvent2);
 		
 		Message message = new CommandMessage();
