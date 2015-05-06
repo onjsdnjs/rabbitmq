@@ -52,11 +52,9 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 		
 		Message message = new CommandMessage();
 		message.setMessage("test message");
-		ProducerConverter<Object> convert = (ProducerConverter<Object>) converterInstance(RabbitMQConfiguration.class);
-		byte[] byteMessage = convert.convert(message);
 		
 		RabbitMQProducerHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
-		rabbitMQProducerHandler.publish(messageEvents, null, byteMessage);
+		rabbitMQProducerHandler.publish(messageEvents, null, message);
 	}
 
 	@Override

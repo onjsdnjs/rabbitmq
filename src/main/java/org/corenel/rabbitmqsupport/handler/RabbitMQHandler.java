@@ -11,12 +11,16 @@ import org.corenel.rabbitmqsupport.consumer.DefaultConsumer;
 import org.corenel.rabbitmqsupport.converters.DefaultConverter;
 import org.corenel.rabbitmqsupport.converters.ProducerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 
 @SuppressWarnings("unchecked")
 public class RabbitMQHandler extends AbstractRabbitMQHandler {
+	
+	Logger LOGGER = LoggerFactory.getLogger(RabbitMQHandler.class);
 	
 	public RabbitMQHandler(RabbitMQConnectionPool pool) {
 		super(pool);
@@ -30,7 +34,7 @@ public class RabbitMQHandler extends AbstractRabbitMQHandler {
 			
         	Channel channel = createChannel();
         	declareAndBind(channel, messageEvent);
-            new DefaultConsumer<T>(getConnection(), channel, new ConsumerRegister(), messageEvent);
+            new DefaultConsumer<T>(channel, new ConsumerRegister(), messageEvent);
         }
     }
 
@@ -42,7 +46,7 @@ public class RabbitMQHandler extends AbstractRabbitMQHandler {
         	
         	Channel channel = createChannel();
         	declareAndBind(channel, messageEvent);
-            new DefaultConsumer<T>(getConnection(), channel, new ConsumerRegister(), messageEvent);
+            new DefaultConsumer<T>(channel, new ConsumerRegister(), messageEvent);
         }
     }
 

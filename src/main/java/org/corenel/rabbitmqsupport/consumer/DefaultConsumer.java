@@ -1,5 +1,6 @@
 package org.corenel.rabbitmqsupport.consumer;
 
+
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.converterInstance;
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.fetchConfigurationInfo;
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.loadMethods;
@@ -21,26 +22,27 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
 import org.corenel.rabbitmqsupport.converters.ConsumerConverter;
 import org.corenel.rabbitmqsupport.message.CommandMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.ShutdownSignalException;
 
 public class DefaultConsumer<T> implements Consumer {
 	
+	Logger LOGGER = LoggerFactory.getLogger(DefaultConsumer.class);
+	
     private ConsumerRegister consumerRegister;
     private Map<Class<? extends Annotation>, Method> annotations;
     private T messageEvent;
 	private Channel channel;
-	private Connection connection;
 
-    public DefaultConsumer(Connection con, Channel ch, ConsumerRegister register, T event) throws IOException {
+    public DefaultConsumer(Channel ch, ConsumerRegister register, T event) throws IOException {
     
-    	connection = con;
 		channel = ch;
 		messageEvent = event;
 		consumerRegister = register;
@@ -63,7 +65,7 @@ public class DefaultConsumer<T> implements Consumer {
             }
             catch (final Exception e)
             {
-                /*LOGGER.log(Level.SEVERE, "Failed to push over websocket message ID: " + properties.getMessageId(), e);*/
+                LOGGER.info("Failed to push over websocket message ID: " + properties.getMessageId(), e);
                 try
                 {
                     final boolean requeue = true;
@@ -71,7 +73,7 @@ public class DefaultConsumer<T> implements Consumer {
                 }
                 catch (final Exception e2)
                 {
-                    /*LOGGER.log(Level.SEVERE, "Failed to reject and requeue message ID: " + properties.getMessageId(), e);*/
+                    LOGGER.info("Failed to reject and requeue message ID: " + properties.getMessageId(), e);
                 }
             }finally{
 //            	channel.close();
@@ -112,12 +114,12 @@ public class DefaultConsumer<T> implements Consumer {
 	        }
         }
 
-        System.out.println(builder.toString());
+        LOGGER.info(builder.toString());
     }
 
     @Override
     public void handleCancelOk(String consumerTag) {
-        System.out.println("handleCancelOk");
+    	LOGGER.info("handleCancelOk");
 
         Method method = annotations.get(OnCancelBySender.class);
 
@@ -132,7 +134,7 @@ public class DefaultConsumer<T> implements Consumer {
 
     @Override
     public void handleCancel(String consumerTag) throws IOException {
-        System.out.println("handleCancel");
+    	LOGGER.info("handleCancel");
 
         Method method = annotations.get(OnCancel.class);
 
@@ -166,7 +168,7 @@ public class DefaultConsumer<T> implements Consumer {
 
     @Override
     public void handleRecoverOk(String consumerTag) {
-        System.out.println("handleRecoverOk");
+    	LOGGER.info("handleRecoverOk");
 
         Method method = annotations.get(OnRecover.class);
 
