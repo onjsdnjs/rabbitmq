@@ -16,6 +16,7 @@ public class ConsumerRegister {
         String queueName = fetchConfigurationInfo(event.getClass(), RabbitMQConfig.class).queue();
         boolean autoAck = fetchConfigurationInfo(event.getClass(), RabbitMQConfig.class).autoAck();
         int basicQos = fetchConfigurationInfo(event.getClass(), RabbitMQConfig.class).basicQos();
+        
         channel.basicQos(basicQos);
         channel.basicConsume(queueName, autoAck, consumer);
     }
