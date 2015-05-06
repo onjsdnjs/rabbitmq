@@ -16,5 +16,5 @@ public @interface RabbitMQContext {
     
 	String virtualhost() default "/";
     
-	String urls() default "localhost:5672"; //if you have a cluster, you should separate each url by ";"
+	String urls() default "localhost:5672"; // 클러스터 구성 시 세미콜론(;)을 구분으로 하여 url 을 추가한다 (ex: localhost:5672;localhost:5673)
 }
