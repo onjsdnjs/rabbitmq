@@ -7,11 +7,11 @@ import java.io.IOException;
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Consumer;
 
-@SuppressWarnings("rawtypes")
 public class ConsumerRegister {
 	
-	public <T> void register(DefaultConsumer consumer, Channel channel, T event) throws IOException {
+	public <T> void register(Consumer consumer, Channel channel, T event) throws IOException {
 		
         String queueName = fetchConfigurationInfo(event.getClass(), RabbitMQConfig.class).queue();
         boolean autoAck = fetchConfigurationInfo(event.getClass(), RabbitMQConfig.class).autoAck();
