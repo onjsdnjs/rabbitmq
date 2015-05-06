@@ -9,41 +9,46 @@ import org.corenel.rabbitmqsupport.consumer.annotations.OnCancel;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnCancelBySender;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnMessage;
 import org.corenel.rabbitmqsupport.consumer.annotations.OnRecover;
+import org.corenel.rabbitmqsupport.handler.RabbitMQManager;
 import org.corenel.rabbitmqsupport.message.CommandMessage;
 import org.corenel.rabbitmqsupport.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RabbitMQConfig
 public class RabbitMessageEvent<T> implements MessageEvent<T>{
+	
+	Logger LOGGER = LoggerFactory.getLogger(RabbitMessageEvent.class);
 
     @OnMessage
     public void onMessage(T t) {
     	Message message = (CommandMessage)t;
-    	System.out.println(message.getMessage());
+    	LOGGER.info(message.getMessage());
     }
 
 	@AfterRegistered
 	public void AfterRegistered(T t) {
-		System.out.println(t);
+		LOGGER.info(t.toString());
 	}
 
 	@OnCancel
 	public void onCancel(T t) {
-		System.out.println(t);
+		LOGGER.info(t.toString());
 	}
 
 	@OnCancelBySender
 	public void onCancelBySender(T t) {
-		System.out.println(t);
+		LOGGER.info(t.toString());
 	}
 
 	@OnRecover
 	public void onRecover(T t) {
-		System.out.println(t);
+		LOGGER.info(t.toString());
 	}
 
 	@BeforeShutdown
 	public void onBeforeShutdown(T t) {
-		System.out.println(t);
+		LOGGER.info(t.toString());
 	}
 	
 	@Override
