@@ -16,49 +16,41 @@ public abstract class AbstractRabbitMQHandler extends RabbitMQManager implements
 		super(pool);
 	}
 
-	protected void declareAndBind(Channel channel, Object... messages) throws IOException {
+	protected void declareAndBind(Channel channel, Object messageEvent) throws IOException {
 	
-		exchangeDeclare(channel, messages);
-		queueDeclare(channel, messages);
-		bind(channel, messages);
-		
-	}
-	
-	private <T> void exchangeDeclare(Channel channel, T... messages) throws IOException {
-		
-    	for (T messageEvent : messages) {
-    	
-    		String exchange = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exchange();
-    		String type = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).type();
-    		
-    		channel.exchangeDeclare(exchange, type);
-        }
-	}
-	
-	private <T> void queueDeclare(Channel channel, T... messages) throws IOException {
-		
-		for (T messageEvent : messages) {
-			
-			String queue = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue();
-			boolean durable = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).durable();
-			boolean exclusive = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exclusive();
-			boolean autoDelete = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).autoDelete();
-			
-			channel.queueDeclare(queue, durable, exclusive, autoDelete, ((MessageEvent)messageEvent).arguments());
+		String exchange = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exchange();
+
+		queueDeclare(channel, messageEvent);
+		if(!"".equals(exchange)){
+			exchangeDeclare(channel, messageEvent);
+			bind(channel, messageEvent);
 		}
+	}
+	
+	private <T> void exchangeDeclare(Channel channel, T messageEvent) throws IOException {
+		
+		String exchange = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exchange();
+		String type = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).type();
+		
+		channel.exchangeDeclare(exchange, type);
+	}
+	
+	private <T> void queueDeclare(Channel channel, T messageEvent) throws IOException {
+		
+		String queue = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue();
+		boolean durable = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).durable();
+		boolean exclusive = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exclusive();
+		boolean autoDelete = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).autoDelete();
+		
+		channel.queueDeclare(queue, durable, exclusive, autoDelete, ((MessageEvent)messageEvent).arguments());
 	}
 
-	private <T> BindOk bind(Channel channel, T... messages) throws IOException {
+	private <T> BindOk bind(Channel channel, T messageEvent) throws IOException {
 		
-		for (T messageEvent : messages) {
-			
-			String queue = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue();
-			String exchange = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exchange();
-			String routingKey = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).routingKey();
-			
-			return channel.queueBind(queue, exchange, routingKey);
-		}
+		String queue = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).queue();
+		String exchange = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).exchange();
+		String routingKey = fetchConfigurationInfo(messageEvent.getClass(), RabbitMQConfig.class).routingKey();
 		
-		return null;
+		return channel.queueBind(queue, exchange, routingKey);
 	}
 }
