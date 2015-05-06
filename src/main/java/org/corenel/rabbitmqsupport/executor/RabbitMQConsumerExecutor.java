@@ -33,8 +33,6 @@ public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements Initia
 
 		List<MessageEvent<Message>> messageEvents = new ArrayList<MessageEvent<Message>>();
 		messageEvents.add(messageEvent1);
-//		messageEvents.add(messageEvent1);
-		
 		
 		MQHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);
 		rabbitMQConsumerHandler.register(messageEvents);

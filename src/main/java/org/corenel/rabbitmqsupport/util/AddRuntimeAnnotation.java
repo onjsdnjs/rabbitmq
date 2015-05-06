@@ -21,6 +21,7 @@ import javassist.bytecode.annotation.FloatMemberValue;
 import javassist.bytecode.annotation.IntegerMemberValue;
 import javassist.bytecode.annotation.ShortMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
+import javassist.util.HotSwapper;
 
 
 public class AddRuntimeAnnotation {
