@@ -2,7 +2,6 @@ package org.corenel.rabbitmqsupport.executor;
 
 
 import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.fetchConfigurationInfo;
-import static org.corenel.rabbitmqsupport.util.AnnotationIntrospector.converterInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +11,8 @@ import javax.annotation.Resource;
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
 import org.corenel.rabbitmqsupport.constants.ApplicationConstants;
-import org.corenel.rabbitmqsupport.converters.ProducerConverter;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
+import org.corenel.rabbitmqsupport.handler.MQHandler;
 import org.corenel.rabbitmqsupport.handler.RabbitMQProducerHandler;
 import org.corenel.rabbitmqsupport.message.CommandMessage;
 import org.corenel.rabbitmqsupport.message.Message;
@@ -62,7 +61,7 @@ public class RabbitMQProducerExecutor extends RabbitMQExecutor implements Initia
 		Message message = new CommandMessage();
 		message.setMessage("test message");
 		
-		RabbitMQProducerHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
+		MQHandler rabbitMQProducerHandler = new RabbitMQProducerHandler(connectionPool);
 		rabbitMQProducerHandler.publish(messageEvents, null, message);
 	}
 

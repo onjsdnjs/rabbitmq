@@ -2,10 +2,13 @@ package org.corenel.rabbitmqsupport.executor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.corenel.rabbitmqsupport.annotation.RabbitMQConfig;
 import org.corenel.rabbitmqsupport.configurations.RabbitMQConfiguration;
 import org.corenel.rabbitmqsupport.factory.RabbitMQConnectionPool;
+import org.corenel.rabbitmqsupport.handler.MQHandler;
 import org.corenel.rabbitmqsupport.handler.RabbitMQConsumerHandler;
 import org.corenel.rabbitmqsupport.message.Message;
 import org.corenel.rabbitmqsupport.message.event.MessageEvent;
@@ -40,7 +43,7 @@ public class RabbitMQConsumerExecutor extends RabbitMQExecutor implements Initia
 		messageEvents.add(messageEvent1);
 		messageEvents.add(messageEvent1);
 		
-		RabbitMQConsumerHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);
+		MQHandler rabbitMQConsumerHandler = new RabbitMQConsumerHandler(connectionPool);
 		rabbitMQConsumerHandler.register(messageEvents);
 	}
 

@@ -37,5 +37,5 @@ public @interface RabbitMQConfig {
 
     int retryInterval() default 20000;
 
-    int basicQos() default 1;
+    int basicQos() default 2;
 }
